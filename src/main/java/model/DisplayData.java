@@ -6,21 +6,24 @@ public class DisplayData {
 	private String hidukeLast;
 	private String himokuSelectId;
 	private String meisaiSelect;
+	private Integer tableScrollTop;
 	private String errorMsg;
 
-	public DisplayData(String hidukeFirst, String hidukeLast, String himokuSelectId,String meisaiSelect) {
+	public DisplayData(String hidukeFirst, String hidukeLast, String himokuSelectId, String meisaiSelect,
+			String tableScrollTop) {
 
 		StringBuilder errorMsg = new StringBuilder("");
 
 		InputLogic inputLogic = new InputLogic();
 		inputLogic.parseHiduke(hidukeFirst, errorMsg);
 		inputLogic.parseHiduke(hidukeLast, errorMsg);
-		inputLogic.parseHimokuId(himokuSelectId,"display", errorMsg);
+		inputLogic.parseHimokuId(himokuSelectId, "display", errorMsg);
 
 		this.hidukeFirst = hidukeFirst;
 		this.hidukeLast = hidukeLast;
 		this.himokuSelectId = himokuSelectId;
 		this.meisaiSelect = meisaiSelect;
+		this.tableScrollTop = inputLogic.parseInteger(tableScrollTop);
 		this.errorMsg = errorMsg.toString();
 
 	}
@@ -40,7 +43,11 @@ public class DisplayData {
 	public String getMeisaiSelect() {
 		return this.meisaiSelect;
 	}
-	
+
+	public Integer getTableScrollTop() {
+		return this.tableScrollTop;
+	}
+
 	public String getErrorMsg() {
 		return this.errorMsg;
 	}

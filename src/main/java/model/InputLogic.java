@@ -8,6 +8,19 @@ import jakarta.servlet.http.HttpSession;
 
 public class InputLogic {
 
+	public Integer parseInteger(String kakeiboTableScrollTop) {
+
+		if (kakeiboTableScrollTop == null || kakeiboTableScrollTop.length() == 0) {
+			return 0;
+		}
+
+		try {
+			return Integer.parseInt(kakeiboTableScrollTop);
+		} catch (NumberFormatException e) {
+			return null;
+		}	
+	}
+	
 	public String parseHimokumei(String himokumei, StringBuilder msg) {
 
 		if (himokumei == null) {

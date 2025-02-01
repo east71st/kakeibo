@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="model.Kakeibo,model.DisplayData,model.Himoku,java.util.Date,java.util.List,java.util.Map,java.text.SimpleDateFormat"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ page
+	import="model.Kakeibo,model.DisplayData,model.Himoku,java.util.Date,java.util.List,java.util.Map,java.text.SimpleDateFormat"%>
 
 <%
 List<Kakeibo> kakeiboList = (List<Kakeibo>) request.getAttribute("kakeiboList");
@@ -17,10 +19,10 @@ String today = dateFormat.format(new Date());
 <body>
 
 	<header>
-	
+
 		<jsp:include page="WEB-INF/jsp/nav.jsp" />
 	</header>
-	
+
 	<div id="main">
 
 		<section id="console">
@@ -28,44 +30,45 @@ String today = dateFormat.format(new Date());
 				<table>
 					<tr>
 						<td>期間</td>
-						<td>
-							<input type="date" name="hidukeFirst" id="hidukeFirst" required>～
-						</td>
+						<td><input type="date" name="hidukeFirst" id="hidukeFirst"
+							required>～</td>
 					</tr>
 					<tr>
 						<td></td>
-						<td>
-							<input type="date" name="hidukeLast" id="hidukeLast" required>
-						</td>
+						<td><input type="date" name="hidukeLast" id="hidukeLast"
+							required></td>
 					</tr>
 					<tr>
 						<td>費目</td>
 						<td>
 							<select name="himokuSelectId" id="himokuSelectId">
-								<option value="0">全て</option>
+									<option value="0">全て</option>
 							</select>
 						</td>
 					</tr>
 					<tr>
 						<td>明細</td>
-						<td rowspan="4">
-							<textarea rows="4" cols="15" name="meisaiSelect" id="meisaiSelect"></textarea>
-						</td>
+						<td rowspan="4"><textarea rows="4" cols="15"
+								name="meisaiSelect" id="meisaiSelect"></textarea></td>
 					</tr>
-					<tr><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td></tr>
-					<tr><td>&nbsp;</td></tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
 					<tr>
 						<td></td>
-						<td>
-							<input type="submit" value="表示">
-						</td>
+						<td><input type="submit" value="表示"></td>
 					</tr>
 				</table>
 			</form>
-	
+
 		</section>
-	
+
 		<section id="tableSection">
 			<div id="tableArea">
 				<table id="kakeiboTable">
@@ -75,13 +78,11 @@ String today = dateFormat.format(new Date());
 			</div>
 		</section>
 	</div>
-		
+
 	<footer>
 		<%if (updateData != null && updateData.getErrorMsg().length() != 0) {%>
-			<div id="errorDisplay">
-				${updateData.getErrorMsg()}
-			</div>
-		<%}%>	
+		<div id="errorDisplay">${updateData.getErrorMsg()}</div>
+		<%}%>
 	</footer>
 </body>
 
@@ -102,7 +103,7 @@ String today = dateFormat.format(new Date());
 		document.getElementById('hidukeFirst').value = '<%=updateData.getHidukeFirst()%>';
 		document.getElementById('hidukeLast').value = '<%=updateData.getHidukeLast()%>';
 		document.getElementById('himokuSelectId').value = '<%=updateData.getHimokuSelectId()%>'
-		document.getElementById('meisaiSelect').value = '<%= updateData.getMeisaiSelect()%>'
+		document.getElementById('meisaiSelect').value = '<%=updateData.getMeisaiSelect()%>'
 	'<%} else {%>'
 	
 		document.getElementById('hidukeFirst').value = '<%=today%>';
@@ -218,6 +219,8 @@ String today = dateFormat.format(new Date());
 			tbody.appendChild(tr);
 		'<%}%>'
 		
+		document.getElementById('tableArea').scrollTop = '<%=updateData.getTableScrollTop()%>'
+		
 		function clicked(e) {
 				
 			const url = 'http://localhost:8080/kakeibo/UpdateServlet';
@@ -227,7 +230,8 @@ String today = dateFormat.format(new Date());
 		    fd.append('hidukeLast',document.getElementById('hidukeLast').value);
 		    fd.append('himokuSelectId',document.getElementById('himokuSelectId').value);
 		    fd.append('meisaiSelect',document.getElementById('meisaiSelect').value);
-		    
+			fd.append('tableScrollTop',document.getElementById('tableArea').scrollTop);
+						   
 			let trChildren = e.target.parentElement.parentElement.children
 		  
 			fd.append('id', trChildren[0].textContent);
@@ -236,6 +240,7 @@ String today = dateFormat.format(new Date());
 			fd.append('meisai',trChildren[3].textContent);
 			fd.append('nyukingaku',trChildren[4].textContent);
 			fd.append('shukingaku',trChildren[5].textContent);
+			
 			fd.append('option',e.target.className);
 	
 		    fetch(url,{

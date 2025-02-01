@@ -2,7 +2,7 @@ package model;
 
 import java.util.Date;
 
-public class ModifyKakeiboData {
+public class UpdateKakeiboData {
 
 	private String updateId;
 	private String updateHiduke;
@@ -13,7 +13,7 @@ public class ModifyKakeiboData {
 	private String errorMsg;
 	private Kakeibo kakeibo;
 
-	public ModifyKakeiboData(String updateId, String updateHiduke, String updateHimokuId, String updateMeisai,
+	public UpdateKakeiboData(String updateId, String updateHiduke, String updateHimokuId, String updateMeisai,
 			String updateNyukingaku, String updateShukingaku) {
 
 		StringBuilder errorMsg = new StringBuilder("");

@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import model.DisplayData;
 import model.HimokuMapSetup;
 import model.Kakeibo;
-import model.ModifyKakeiboData;
+import model.UpdateKakeiboData;
 
 @WebServlet("/UpdateServlet")
 @MultipartConfig
@@ -46,12 +46,13 @@ public class UpdateServlet extends HttpServlet {
 		String hidukeLast = request.getParameter("hidukeLast");
 		String himokuSelectId = request.getParameter("himokuSelectId");
 		String meisaiSelect = request.getParameter("meisaiSelect");
+		String tableScrollTop = request.getParameter("tableScrollTop");
 
-		DisplayData updateData = new DisplayData(hidukeFirst, hidukeLast, himokuSelectId, meisaiSelect);
+		DisplayData updateData = new DisplayData(hidukeFirst, hidukeLast, himokuSelectId, meisaiSelect, tableScrollTop);
 
 		HttpSession session = request.getSession();
 		session.setAttribute("updateData", updateData);
-		
+
 		KakeiboDAO kakeiboDAO = new KakeiboDAO();
 
 		if (request.getParameter("option") != null) {
@@ -63,17 +64,17 @@ public class UpdateServlet extends HttpServlet {
 			String nyukingaku = request.getParameter("nyukingaku").replace(",", "");
 			String shukingaku = request.getParameter("shukingaku").replace(",", "");
 
-			ModifyKakeiboData modifyKakeiboData = new ModifyKakeiboData(id, hiduke, himokuId, meisai, nyukingaku,
+			UpdateKakeiboData updateKakeiboData = new UpdateKakeiboData(id, hiduke, himokuId, meisai, nyukingaku,
 					shukingaku);
 
-			if (modifyKakeiboData.getErrorMsg().equals("")) {
+			if (updateKakeiboData.getErrorMsg().equals("")) {
 
 				if (request.getParameter("option").equals("update")) {
 
-					kakeiboDAO.update(modifyKakeiboData.getKakeibo());
+					kakeiboDAO.update(updateKakeiboData.getKakeibo());
 				} else if (request.getParameter("option").equals("delete")) {
 
-					kakeiboDAO.delete(modifyKakeiboData.getKakeibo());
+					kakeiboDAO.delete(updateKakeiboData.getKakeibo());
 				}
 			}
 		}

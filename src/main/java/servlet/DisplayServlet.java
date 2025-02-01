@@ -45,7 +45,7 @@ public class DisplayServlet extends HttpServlet {
 		String himokuSelectId = request.getParameter("himokuSelectId");
 		String meisaiSelect = request.getParameter("meisaiSelect");
 
-		DisplayData displayData = new DisplayData(hidukeFirst, hidukeLast, himokuSelectId, meisaiSelect);
+		DisplayData displayData = new DisplayData(hidukeFirst, hidukeLast, himokuSelectId, meisaiSelect,"0");
 
 		HttpSession session = request.getSession();
 		session.setAttribute("displayData", displayData);
