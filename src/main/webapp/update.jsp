@@ -252,7 +252,7 @@ String today = dateFormat.format(new Date());
 		        }
 		        console.log('ok!');
 		        location.reload();
-		        return response.json();
+		        return response;
 		    }).then((data)  => {
 		        console.log(data);
 		    }).catch((error) => {
