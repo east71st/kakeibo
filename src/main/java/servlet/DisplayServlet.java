@@ -12,10 +12,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.DisplayData;
+import model.ConsoleData;
 import model.HimokuMapSetup;
 import model.Kakeibo;
 
+//家計簿データの表示用画面のためのコントロール
 @WebServlet("/DisplayServlet")
 public class DisplayServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -27,6 +28,9 @@ public class DisplayServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		request.setCharacterEncoding("UTF-8");
+		
+		//データベースから費目データを呼び出してマップに格納しセッションスコープに保存
 		HimokuMapSetup himokuMapSetup = new HimokuMapSetup();
 		himokuMapSetup.setHimokuMap(request);
 
@@ -40,16 +44,18 @@ public class DisplayServlet extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");
 
+		//入力された家計簿データの表示条件をチェックしてセッションスコープに保存
 		String hidukeFirst = request.getParameter("hidukeFirst");
 		String hidukeLast = request.getParameter("hidukeLast");
 		String himokuSelectId = request.getParameter("himokuSelectId");
 		String meisaiSelect = request.getParameter("meisaiSelect");
 
-		DisplayData displayData = new DisplayData(hidukeFirst, hidukeLast, himokuSelectId, meisaiSelect,"0");
+		ConsoleData consoleData = new ConsoleData(hidukeFirst, hidukeLast, himokuSelectId, meisaiSelect, "0");
 
 		HttpSession session = request.getSession();
-		session.setAttribute("displayData", displayData);
+		session.setAttribute("DisplayConsoleData", consoleData);
 
+		//データベースから家計簿データを呼び出してリストに格納しリクエストスコープに保存
 		KakeiboDAO kakeiboDAO = new KakeiboDAO();
 		List<Kakeibo> kakeiboList = (List<Kakeibo>) kakeiboDAO.findSelect(hidukeFirst, hidukeLast, himokuSelectId,
 				meisaiSelect);

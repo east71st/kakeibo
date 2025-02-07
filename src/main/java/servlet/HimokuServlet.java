@@ -18,6 +18,7 @@ import model.Himoku;
 import model.HimokuMapSetup;
 import model.HimokuSettingData;
 
+//費目データの設定用画面のためのコントロール
 @WebServlet("/HimokuServlet")
 @MultipartConfig
 public class HimokuServlet extends HttpServlet {
@@ -32,6 +33,7 @@ public class HimokuServlet extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");
 
+		//データベースから費目データを呼び出してマップに格納しセッションスコープに保存
 		HimokuMapSetup himokuMapSetup = new HimokuMapSetup();
 		himokuMapSetup.setHimokuMap(request);
 
@@ -45,30 +47,32 @@ public class HimokuServlet extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");
 
-		HimokuDAO himokuDAO = new HimokuDAO();
-
+		//入力されたデータにエラーがなければ費目データモデルを生成
 		String id = request.getParameter("id");
 		String himokumei = request.getParameter("himokumei");
 
 		HimokuSettingData himokuSettingData = new HimokuSettingData(id, himokumei);
 
+		//入力データと費目データモデルをセッションスコープに保存
+		HttpSession session = request.getSession();
+		session.setAttribute("himokuSettingData", himokuSettingData);
+		
+		//データベースに費目データを追加もしくは更新
+		HimokuDAO himokuDAO = new HimokuDAO();
 		if (himokuSettingData.getErrorMsg().equals("")) {
 
-			if (request.getParameter("option") == null) {
+			if (request.getParameter("option").equals("create")) {
+				
 				himokuDAO.create(himokuSettingData.getHimoku());
-
 			} else if (request.getParameter("option").equals("update")) {
 
 				himokuDAO.update(himokuSettingData.getHimoku());
 			}
 		}
-
-		Map<Integer, Himoku> himokuMap = (Map<Integer, Himoku>) himokuDAO.findAll();
 		
-		HttpSession session = request.getSession();
-		
-		session.setAttribute("himokuSettingData", himokuSettingData);
-		session.setAttribute("himokuMap", himokuMap);
+		//データベースから費目データを呼び出してマップに格納しセッションスコープに保存
+		HimokuMapSetup himokuMapSetup = new HimokuMapSetup();
+		himokuMapSetup.setHimokuMap(request);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("himokuSetting.jsp");
 		dispatcher.forward(request, response);

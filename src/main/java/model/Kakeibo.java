@@ -2,6 +2,7 @@ package model;
 
 import java.util.Date;
 
+//家計簿データの格納用モデル
 public class Kakeibo {
 
 	private int id;
@@ -10,6 +11,9 @@ public class Kakeibo {
 	private String meisai;
 	private int nyukingaku;
 	private int shukingaku;
+
+	public Kakeibo() {
+	}
 
 	public Kakeibo(int id, Date hiduke, int himokuId, String meisai, int nyukingaku, int shukingaku) {
 		this.id = id;

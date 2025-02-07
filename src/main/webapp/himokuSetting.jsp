@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@ page import="model.Himoku,model.HimokuSettingData,java.util.Date,java.util.Map,java.text.SimpleDateFormat"%>
 <%
-HimokuSettingData himokuSettingData = (HimokuSettingData) request.getAttribute("himokuSettingData");
+HimokuSettingData himokuSettingData = (HimokuSettingData) session.getAttribute("himokuSettingData");
 Map<Integer, Himoku> himokuMap = (Map<Integer, Himoku>) session.getAttribute("himokuMap");
 %>
+
+<!-- 費目データの設定用画面の表示 -->
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -12,12 +14,12 @@ Map<Integer, Himoku> himokuMap = (Map<Integer, Himoku>) session.getAttribute("hi
 <body>
 
 	<header>
-	
-		<jsp:include page="WEB-INF/jsp/nav.jsp" />
+		<!-- メニューバーの表示 -->
+		<jsp:include page="WEB-INF/jsp/menu.jsp" />
 	</header>
 	
 	<div id="main">
-	
+		<!-- コンソールの表示 -->
 		<section id="console">
 			<form action="HimokuServlet" method="post">
 				<table>
@@ -31,9 +33,11 @@ Map<Integer, Himoku> himokuMap = (Map<Integer, Himoku>) session.getAttribute("hi
 					</tr>
 				</table>
 				<input type="hidden" name="id" id="id" value="0">
+				<input type="hidden" name="option" value="create">
 			</form>
 		</section>
 		
+		<!-- 費目データテーブルの表示 -->
 		<section id="tableSection">
 			<div id="tableArea">
 				<table>
@@ -45,6 +49,7 @@ Map<Integer, Himoku> himokuMap = (Map<Integer, Himoku>) session.getAttribute("hi
 	</div>
 	
 	<footer>
+		<!-- 入力エラーの表示 -->
 		<% if (himokuSettingData != null && himokuSettingData.getErrorMsg().length() != 0) { %>
 			<div id="errorDisplay">
 				${himokuSettingData.getErrorMsg()}
@@ -54,7 +59,8 @@ Map<Integer, Himoku> himokuMap = (Map<Integer, Himoku>) session.getAttribute("hi
 </body>
 
 <script>
-	'<%if (himokuMap != null) {%>'
+	//費目データテーブルのデータ表示
+	'<% if (himokuMap != null) { %>'
 		
 		let header = ['ID', '費目名',''];
 		let colWidth =['50px','200px','40px'];
@@ -79,7 +85,7 @@ Map<Integer, Himoku> himokuMap = (Map<Integer, Himoku>) session.getAttribute("hi
 		
 		let tbody = document.getElementById('tbody');
 		
-		'<%for (int i : himokuMap.keySet()) {%>'
+		'<% for (int i : himokuMap.keySet()) { %>'
 			
 			tr = document.createElement('tr');
 			tr.className = 'bodyRow';
@@ -109,8 +115,9 @@ Map<Integer, Himoku> himokuMap = (Map<Integer, Himoku>) session.getAttribute("hi
 			tr.appendChild(td);
 					
 			tbody.appendChild(tr);
-		'<%}%>'
-			
+		'<% } %>'
+		
+		//修正する費目データをコントロールにポスト
 		function clicked(e) {
 				
 			const url = 'http://localhost:8080/kakeibo/HimokuServlet';
@@ -130,7 +137,8 @@ Map<Integer, Himoku> himokuMap = (Map<Integer, Himoku>) session.getAttribute("hi
 		            console.log('error!');
 		        } 
 		        console.log('ok!');
-		        return response.json();
+// 		        location.reload();
+		        return response;
 		    }).then((data)  => {
 		        console.log(data);
 		    }).catch((error) => {
@@ -138,7 +146,7 @@ Map<Integer, Himoku> himokuMap = (Map<Integer, Himoku>) session.getAttribute("hi
 		    });
 		}
 		
-	'<%}%>'
+	'<% } %>'
 
 </script>
 

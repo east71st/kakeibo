@@ -12,6 +12,7 @@ import java.util.Map;
 
 import model.Himoku;
 
+//費目データのDAO
 public class HimokuDAO {
 
 	private final String JDBC_URL = "jdbc:h2:tcp://localhost/U:/My Documents/h2/kakeibo";

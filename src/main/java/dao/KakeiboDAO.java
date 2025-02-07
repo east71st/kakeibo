@@ -11,6 +11,7 @@ import java.util.List;
 
 import model.Kakeibo;
 
+//家計簿データのDAO
 public class KakeiboDAO {
 
 	private final String JDBC_URL = "jdbc:h2:tcp://localhost/U:/My Documents/h2/kakeibo";
@@ -73,7 +74,7 @@ public class KakeiboDAO {
 			}
 
 			String sqlWHERE = " WHERE" + sqlHiduke + sqlHimokuId + sqlMeisai;
-			String sql = "SELECT * FROM KAKEIBO" + sqlWHERE + " ORDER BY HIDUKE ASC";
+			String sql = "SELECT * FROM KAKEIBO" + sqlWHERE + " ORDER BY HIDUKE ASC,ID ASC";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			ResultSet rs = pStmt.executeQuery();
 
@@ -156,7 +157,7 @@ public class KakeiboDAO {
 		return true;
 	}
 
-	public boolean delete(Kakeibo kakeibo) {
+	public boolean delete(int id) {
 
 		try {
 			Class.forName("org.h2.Driver");
@@ -166,15 +167,10 @@ public class KakeiboDAO {
 
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
 
-			String sql = "DELETE FROM KAKEIBO WHERE ID=? AND HIDUKE=? AND HIMOKU_ID=? AND MEISAI=? AND NYUKINGAKU=? AND SHUKINGAKU=?";
+			String sql = "DELETE FROM KAKEIBO WHERE ID=?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 
-			pStmt.setInt(1, kakeibo.getId());
-			pStmt.setDate(2, new java.sql.Date(kakeibo.getHiduke().getTime()));
-			pStmt.setInt(3, kakeibo.getHimokuId());
-			pStmt.setString(4, kakeibo.getMeisai());
-			pStmt.setInt(5, kakeibo.getNyukingaku());
-			pStmt.setInt(6, kakeibo.getShukingaku());
+			pStmt.setInt(1, id);
 
 			int result = pStmt.executeUpdate();
 			if (result != 1) {

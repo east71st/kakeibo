@@ -1,14 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="model.Kakeibo,model.DisplayData,model.Himoku,java.lang.String,java.util.Date,java.util.List,java.util.Map,java.time.LocalDate,java.time.format.DateTimeFormatter"%>
+<%@ page import="model.Kakeibo,model.ConsoleData,model.Himoku,java.lang.String,java.util.Date,java.util.List,java.util.Map,java.time.LocalDate,java.time.format.DateTimeFormatter"%>
     
 <%
-List<Kakeibo> kakeiboList = (List<Kakeibo>) request.getAttribute("kakeiboList");
-Map<Integer,Himoku> himokuMap = (Map<Integer,Himoku>) session.getAttribute("himokuMap");
-DisplayData displayData = (DisplayData) session.getAttribute("displayData");
-String firstDay = LocalDate.now().withDayOfMonth(1).format(DateTimeFormatter.ISO_LOCAL_DATE);
-String lastDay = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).format(DateTimeFormatter.ISO_LOCAL_DATE);
-%>
+    List<Kakeibo> kakeiboList = (List<Kakeibo>) request.getAttribute("kakeiboList");
+    Map<Integer,Himoku> himokuMap = (Map<Integer,Himoku>) session.getAttribute("himokuMap");
+    ConsoleData consoleData = (ConsoleData) session.getAttribute("DisplayConsoleData");
+    String firstDay = LocalDate.now().withDayOfMonth(1).format(DateTimeFormatter.ISO_LOCAL_DATE);
+    String lastDay = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).format(DateTimeFormatter.ISO_LOCAL_DATE);
+    %>
 
+<!-- 家計簿データの表示用画面の表示 -->
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -17,12 +18,12 @@ String lastDay = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())
 <body>
 
 	<header>
-	
-		<jsp:include page="WEB-INF/jsp/nav.jsp"/>
+		<!-- メニューバーの表示 -->
+		<jsp:include page="WEB-INF/jsp/menu.jsp"/>
 	</header>
 	
 	<div id="main">
-	
+		<!-- コンソールの表示 -->
 		<section id="console">
 			<form action="DisplayServlet" method="post">
 				<table>
@@ -64,7 +65,8 @@ String lastDay = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())
 				</table>
 			</form>
 		</section>
-			
+		
+		<!-- 家計簿データテーブルの表示 -->
 		<section id="tableSection">
 			<div id="tableArea">
 			
@@ -117,16 +119,18 @@ String lastDay = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())
 	</div>
 	
 	<footer>
-		<% if (displayData != null && displayData.getErrorMsg().length() != 0) { %>
+		<!-- 入力エラーの表示 -->
+		<% if (consoleData != null && consoleData.getErrorMsg().length() != 0) { %>
 			<div id="errorDisplay">
-				${displayData.getErrorMsg()};
+				${consoleData.getErrorMsg()};
 			</div>
 		<% } %>
 	</footer>
 </body>
 
 <script>
-	
+	//コンソールのデータ表示
+	//費目データのドロップダウンリスト
 	let select = document.getElementById('himokuSelectId');
 	let option;
 	'<% for (Integer i : himokuMap.keySet()) { %>'
@@ -137,14 +141,14 @@ String lastDay = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())
 		select.appendChild(option);
 	'<% } %>'
 	
-	'<% if (displayData != null) { %>'
-	
-		document.getElementById('hidukeFirst').value = '<%= displayData.getHidukeFirst() %>';
-		document.getElementById('hidukeLast').value = '<%= displayData.getHidukeLast() %>';
-		document.getElementById('himokuSelectId').value = '<%= displayData.getHimokuSelectId() %>'
-		document.getElementById('meisaiSelect').value = '<%= displayData.getMeisaiSelect() %>'
+	'<% if (consoleData != null) { %>'
+		//再表示時のデータ表示
+		document.getElementById('hidukeFirst').value = '<%= consoleData.getHidukeFirst() %>';
+		document.getElementById('hidukeLast').value = '<%= consoleData.getHidukeLast() %>';
+		document.getElementById('himokuSelectId').value = '<%= consoleData.getHimokuSelectId() %>'
+		document.getElementById('meisaiSelect').value = '<%= consoleData.getMeisaiSelect() %>'
 	'<% } else { %>'
-	
+		//初期表示時のデータ表示
 		document.getElementById('hidukeFirst').value = '<%= firstDay %>';
 		document.getElementById('hidukeLast').value = '<%= lastDay %>';
 		document.getElementById('himokuSelectId').value = '0';

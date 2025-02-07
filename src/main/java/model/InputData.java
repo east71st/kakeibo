@@ -2,6 +2,7 @@ package model;
 
 import java.util.Date;
 
+//家計簿データの入力用画面で入力された家計簿の新規データの格納用モデル
 public class InputData {
 
 	private String inputHiduke;
@@ -10,17 +11,19 @@ public class InputData {
 	private String inputKingaku;
 	private Kakeibo kakeibo;
 	private String errorMsg;
-	
+
 	public InputData(String inputHiduke, String inputHimokuId, String inputMeisai, String inputKingaku) {
 
 		StringBuilder errorMsg = new StringBuilder("");
 
-		InputLogic inputLogic = new InputLogic();
-		Date hiduke = inputLogic.parseHiduke(inputHiduke, errorMsg);
-		Integer himokuId = inputLogic.parseHimokuId(inputHimokuId,"input", errorMsg);
-		String meisai = inputLogic.parseMeisai(inputMeisai, errorMsg);
-		Integer kingaku = inputLogic.parseKingaku(inputKingaku,"", errorMsg);
+		//入力された家計簿の新規データのチェックをして家計簿データモデルに格納
+		ValidationLogic validationLogic = new ValidationLogic();
+		Date hiduke = validationLogic.parseHiduke(inputHiduke, errorMsg);
+		Integer himokuId = validationLogic.parseHimokuId(inputHimokuId, "input", errorMsg);
+		String meisai = validationLogic.parseMeisai(inputMeisai, errorMsg);
+		Integer kingaku = validationLogic.parseKingaku(inputKingaku, "", errorMsg);
 
+		//エラーがなければ家計簿データモデルを生成
 		Kakeibo kakeibo = null;
 		if (errorMsg.length() == 0) {
 
@@ -62,7 +65,7 @@ public class InputData {
 	public Kakeibo getKakeibo() {
 		return this.kakeibo;
 	}
-	
+
 	public String getErrorMsg() {
 		return this.errorMsg;
 	}

@@ -1,6 +1,7 @@
 package model;
 
-public class DisplayData {
+//家計簿データの表示用画面と修正用画面でコンソールに入力された表示条件データの格納用モデル
+public class ConsoleData {
 
 	private String hidukeFirst;
 	private String hidukeLast;
@@ -9,21 +10,22 @@ public class DisplayData {
 	private Integer tableScrollTop;
 	private String errorMsg;
 
-	public DisplayData(String hidukeFirst, String hidukeLast, String himokuSelectId, String meisaiSelect,
+	public ConsoleData(String hidukeFirst, String hidukeLast, String himokuSelectId, String meisaiSelect,
 			String tableScrollTop) {
 
 		StringBuilder errorMsg = new StringBuilder("");
 
-		InputLogic inputLogic = new InputLogic();
-		inputLogic.parseHiduke(hidukeFirst, errorMsg);
-		inputLogic.parseHiduke(hidukeLast, errorMsg);
-		inputLogic.parseHimokuId(himokuSelectId, "display", errorMsg);
+//		入力された表示条件データのチェック
+		ValidationLogic validationLogic = new ValidationLogic();
+		validationLogic.parseHiduke(hidukeFirst, errorMsg);
+		validationLogic.parseHiduke(hidukeLast, errorMsg);
+		validationLogic.parseHimokuId(himokuSelectId, "display", errorMsg);
 
 		this.hidukeFirst = hidukeFirst;
 		this.hidukeLast = hidukeLast;
 		this.himokuSelectId = himokuSelectId;
 		this.meisaiSelect = meisaiSelect;
-		this.tableScrollTop = inputLogic.parseInteger(tableScrollTop);
+		this.tableScrollTop = validationLogic.parseInteger(tableScrollTop, errorMsg);
 		this.errorMsg = errorMsg.toString();
 
 	}

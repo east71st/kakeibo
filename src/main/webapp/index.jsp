@@ -8,7 +8,7 @@
 <body>
 
 	<header>
-		<jsp:include page="WEB-INF/jsp/nav.jsp" />
+		<jsp:include page="WEB-INF/jsp/menu.jsp" />
 	</header>
 	
 	<footer></footer>

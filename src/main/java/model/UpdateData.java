@@ -2,7 +2,8 @@ package model;
 
 import java.util.Date;
 
-public class UpdateKakeiboData {
+//家計簿データの修正用画面で入力された家計簿の修正データの格納用モデル
+public class UpdateData {
 
 	private String updateId;
 	private String updateHiduke;
@@ -10,29 +11,31 @@ public class UpdateKakeiboData {
 	private String updateNaiyou;
 	private String updateNyukingaku;
 	private String updateShukingaku;
-	private String errorMsg;
 	private Kakeibo kakeibo;
+	private String errorMsg;
 
-	public UpdateKakeiboData(String updateId, String updateHiduke, String updateHimokuId, String updateMeisai,
+	public UpdateData(String updateId, String updateHiduke, String updateHimokuId, String updateMeisai,
 			String updateNyukingaku, String updateShukingaku) {
 
 		StringBuilder errorMsg = new StringBuilder("");
 
-		InputLogic inputLogic = new InputLogic();
+		//入力された家計簿の修正データをチェック
+		ValidationLogic validationLogic = new ValidationLogic();
 
-		Integer id = inputLogic.parseId(updateId, errorMsg);
-		Date hiduke = inputLogic.parseHiduke(updateHiduke, errorMsg);
-		Integer himokuId = inputLogic.parseHimokuId(updateHimokuId, "update", errorMsg);
-		String meisai = inputLogic.parseMeisai(updateMeisai, errorMsg);
-		Integer nyukingaku = inputLogic.parseKingaku(updateNyukingaku, "入", errorMsg);
-		Integer shukingaku = inputLogic.parseKingaku(updateShukingaku, "出", errorMsg);
+		Integer id = validationLogic.parseId(updateId, errorMsg);
+		Date hiduke = validationLogic.parseHiduke(updateHiduke, errorMsg);
+		Integer himokuId = validationLogic.parseHimokuId(updateHimokuId, "update", errorMsg);
+		String meisai = validationLogic.parseMeisai(updateMeisai, errorMsg);
+		Integer nyukingaku = validationLogic.parseKingaku(updateNyukingaku, "入", errorMsg);
+		Integer shukingaku = validationLogic.parseKingaku(updateShukingaku, "出", errorMsg);
 
 		if (himokuId == 1 & shukingaku != 0) {
 			errorMsg = errorMsg.append(errorMsg.length() == 0 ? "" : " ").append("収入に出金があります");
 		} else if (himokuId != 1 & nyukingaku != 0) {
-			errorMsg = errorMsg.append(errorMsg.length() == 0 ? "" : " ").append("出金の費目に入金があります");
+			errorMsg = errorMsg.append(errorMsg.length() == 0 ? "" : " ").append("出金費目に入金があります");
 		}
 
+		//エラーがなければ家計簿データモデルを生成
 		Kakeibo kakeibo = null;
 		if (errorMsg.length() == 0) {
 			kakeibo = new Kakeibo(id, hiduke, himokuId, meisai, nyukingaku, shukingaku);
@@ -44,9 +47,8 @@ public class UpdateKakeiboData {
 		this.updateNaiyou = updateMeisai;
 		this.updateNyukingaku = updateNyukingaku;
 		this.updateShukingaku = updateShukingaku;
-		this.errorMsg = errorMsg.toString();
 		this.kakeibo = kakeibo;
-
+		this.errorMsg = errorMsg.toString();
 	}
 
 	public String getUpdateId() {
@@ -73,11 +75,11 @@ public class UpdateKakeiboData {
 		return this.updateShukingaku;
 	}
 
-	public String getErrorMsg() {
-		return this.errorMsg;
-	}
-
 	public Kakeibo getKakeibo() {
 		return this.kakeibo;
+	}
+
+	public String getErrorMsg() {
+		return this.errorMsg;
 	}
 }
