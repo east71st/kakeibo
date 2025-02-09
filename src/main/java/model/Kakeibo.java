@@ -5,12 +5,12 @@ import java.util.Date;
 //家計簿データの格納用モデル
 public class Kakeibo {
 
-	private int id;
-	private Date hiduke;
-	private int himokuId;
-	private String meisai;
-	private int nyukingaku;
-	private int shukingaku;
+	private int id;			//ID
+	private Date hiduke;	//日付
+	private int himokuId;	//費目ID
+	private String meisai;	//明細
+	private int nyukingaku;	//入金額
+	private int shukingaku;	//出金額
 
 	public Kakeibo() {
 	}

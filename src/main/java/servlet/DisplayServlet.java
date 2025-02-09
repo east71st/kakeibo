@@ -16,7 +16,7 @@ import model.ConsoleData;
 import model.HimokuMapSetup;
 import model.Kakeibo;
 
-//家計簿データの表示用画面のためのコントロール
+//家計簿データの表示用のコントローラ
 @WebServlet("/DisplayServlet")
 public class DisplayServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

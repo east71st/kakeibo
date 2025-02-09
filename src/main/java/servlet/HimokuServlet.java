@@ -18,7 +18,7 @@ import model.Himoku;
 import model.HimokuMapSetup;
 import model.HimokuSettingData;
 
-//費目データの設定用画面のためのコントロール
+//費目データの設定用のコントローラ
 @WebServlet("/HimokuServlet")
 @MultipartConfig
 public class HimokuServlet extends HttpServlet {

@@ -9,7 +9,7 @@ SimpleDateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd");
 String today = dateFormat.format(new Date());
 %>
 
-<!-- 家計簿データの修正用画面表示 -->
+<!-- 家計簿データの修正用画面の表示 -->
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -87,7 +87,7 @@ String today = dateFormat.format(new Date());
 </body>
 
 <script>
-	//コンソールのデータ表示
+	//コンソールの初期データの表示
 	//費目データのドロップダウンリスト
 	let select = document.getElementById('himokuSelectId');
 	let option;

@@ -3,8 +3,8 @@ package model;
 //費目データの格納用モデル
 public class Himoku {
 
-	private int id;
-	private String himokumei;
+	private int id;				//ID
+	private String himokumei;	//費目名
 
 	public Himoku() {
 	}

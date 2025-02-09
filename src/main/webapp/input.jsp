@@ -119,7 +119,7 @@ String today = dateFormat.format(new Date());
 </body>
 
 <script>
-	//コンソールのデータ表示
+	//コンソールの初期データの表示
 	//費目データのドロップダウンリスト
 	let select = document.getElementById('himokuId');
 	let option;

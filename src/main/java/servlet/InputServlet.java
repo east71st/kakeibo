@@ -16,7 +16,7 @@ import model.HimokuMapSetup;
 import model.InputData;
 import model.Kakeibo;
 
-//家計簿データの入力用画面のためのコントロール
+//家計簿データの入力用のコントローラ
 @WebServlet("/InputServlet")
 public class InputServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

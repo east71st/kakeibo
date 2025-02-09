@@ -18,7 +18,7 @@ import model.ValidationLogic;
 import model.Kakeibo;
 import model.UpdateData;
 
-//家計簿データの修正用画面のためのコントロール
+//家計簿データの修正用のコントローラ
 @WebServlet("/UpdateServlet")
 @MultipartConfig
 public class UpdateServlet extends HttpServlet {
@@ -46,7 +46,7 @@ public class UpdateServlet extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");
 
-		//家計簿データの修正用画面で入力した表示条件データをチェックしてセッションスコープに保存
+		//家計簿データの修正用画面でコンソールに入力されたデータをチェックしてセッションスコープに保存
 		String hidukeFirst = request.getParameter("hidukeFirst");
 		String hidukeLast = request.getParameter("hidukeLast");
 		String himokuSelectId = request.getParameter("himokuSelectId");

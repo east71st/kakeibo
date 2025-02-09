@@ -14,16 +14,22 @@ import model.Kakeibo;
 //家計簿データのDAO
 public class KakeiboDAO {
 
-	private final String JDBC_URL = "jdbc:h2:tcp://localhost/U:/My Documents/h2/kakeibo";
-	private final String DB_USER = "sa";
-	private final String DB_PASS = "";
-
+	private final String JDBC_URL = "jdbc:mysql://localhost:3306/kakeibo";
+	private final String DB_USER = "admin";
+	private final String DB_PASS = "password";
+	private final String FQCN = "com.mysql.cj.jdbc.Driver";
+	
+//	private final String JDBC_URL = "jdbc:h2:tcp://localhost/U:/My Documents/h2/kakeibo";
+//	private final String DB_USER = "sa";
+//	private final String DB_PASS = "";
+//	private final String FQCN = "org.h2.Driver";
+	
 	public List<Kakeibo> findAll() {
 
 		List<Kakeibo> kakeiboList = new ArrayList<Kakeibo>();
 
 		try {
-			Class.forName("org.h2.Driver");
+			Class.forName(FQCN);
 		} catch (ClassNotFoundException e) {
 			throw new IllegalStateException("JDBCドライバを読み込めませんでした");
 		}
@@ -56,7 +62,7 @@ public class KakeiboDAO {
 		List<Kakeibo> kakeiboList = new ArrayList<Kakeibo>();
 
 		try {
-			Class.forName("org.h2.Driver");
+			Class.forName(FQCN);
 		} catch (ClassNotFoundException e) {
 			throw new IllegalStateException("JDBCドライバを読み込めませんでした");
 		}
@@ -98,7 +104,7 @@ public class KakeiboDAO {
 	public boolean create(Kakeibo kakeibo) {
 
 		try {
-			Class.forName("org.h2.Driver");
+			Class.forName(FQCN);
 		} catch (ClassNotFoundException e) {
 			throw new IllegalStateException("JDBCドライバを読み込めませんでした");
 		}
@@ -129,7 +135,7 @@ public class KakeiboDAO {
 	public boolean update(Kakeibo kakeibo) {
 
 		try {
-			Class.forName("org.h2.Driver");
+			Class.forName(FQCN);
 		} catch (ClassNotFoundException e) {
 			throw new IllegalStateException("JDBCドライバを読み込めませんでした");
 		}
@@ -160,7 +166,7 @@ public class KakeiboDAO {
 	public boolean delete(int id) {
 
 		try {
-			Class.forName("org.h2.Driver");
+			Class.forName(FQCN);
 		} catch (ClassNotFoundException e) {
 			throw new IllegalStateException("JDBCドライバを読み込めませんでした");
 		}
