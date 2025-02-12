@@ -13,9 +13,12 @@ String today = dateFormat.format(new Date());
 <!DOCTYPE html>
 <html lang="ja">
 
-<jsp:include page="WEB-INF/jsp/head.jsp" />
+<head>
+	<jsp:include page="WEB-INF/jsp/head.jsp" />
+	<script src="js/jquery-3.7.1.min.js"></script>
+</head>
 
-<body>
+<body onload="init()">
 
 	<header>
 		<!-- メニューバーの表示 -->
@@ -84,201 +87,199 @@ String today = dateFormat.format(new Date());
 		<div id="errorDisplay">${consoleData.getErrorMsg()}</div>
 		<% } %>
 	</footer>
-</body>
 
-<script>
-	//コンソールの初期データの表示
-	//費目データのドロップダウンリスト
-	let select = document.getElementById('himokuSelectId');
-	let option;
-	'<% for (Integer i : himokuMap.keySet()) { %>'
-	
-		option = document.createElement('option');
-		option.value = '<%=himokuMap.get(i).getId()%>';
-		option.text = '<%=himokuMap.get(i).getHimokumei()%>';
-		select.appendChild(option);
-	'<% } %>'
-	
-	'<% if (consoleData != null) { %>'
-		//再表示時のデータ表示
-		document.getElementById('hidukeFirst').value = '<%=consoleData.getHidukeFirst()%>';
-		document.getElementById('hidukeLast').value = '<%=consoleData.getHidukeLast()%>';
-		document.getElementById('himokuSelectId').value = '<%=consoleData.getHimokuSelectId()%>'
-		document.getElementById('meisaiSelect').value = '<%=consoleData.getMeisaiSelect()%>'
-	'<% } else { %>'
-		//初期表示時のデータ表示
-		document.getElementById('hidukeFirst').value = '<%=today%>';
-		document.getElementById('hidukeLast').value = '<%=today%>';
-		document.getElementById('himokuSelectId').value = '0';
-		document.getElementById('meisaiSelect').value = '';
-	'<% } %>'
-	
-	'<% if (kakeiboList != null) { %>'
-		//家計簿データテーブルの表示
-		let header = ['ID', '日付', '費目', '内容', '収入', '支出','',''];
-		let colWidth = ['50px','150px','200px','500px','200px','200px','40px','40px'];
-	
-		let thead = document.getElementById('thead');
-		let tr = document.createElement('tr');
-		tr.className = 'headRow';
-		for (let i in header) {
-			let th = document.createElement('th');
-			if (i == 0) {
-				th.className = 'fixdRowCol';
-			}else{
-				th.className = 'fixdRow';
-			}
-			th.setAttribute('width',colWidth[i]);
-			th.innerHTML = header[i];
-			tr.appendChild(th);
-		}
-		thead.appendChild(tr);
-
-		let tbody = document.getElementById('tbody');
-		let td;
-		let input;
-		'<% for (Kakeibo kakeibo : kakeiboList) { %>'
-	
-			tr = document.createElement('tr');
-			tr.className = 'bodyRow';
-	
-			th = document.createElement('th');
-			th.className = 'fixdCol numberCol';
-			th.innerHTML = '<%=String.format("%d", kakeibo.getId())%>';
-			tr.appendChild(th);
-	
-			td = document.createElement('td');
-			td.className = 'innerBoxCol';
-			input = document.createElement('input');
-			input.type = 'date';
-			input.style.width = '100%'
-			input.style.boxSizing = 'border-box';
-			input.style.textAlign = 'center';
-			input.setAttribute('required', '');
-			td.style.textAlign = 'center';
-			input.value = '<%=kakeibo.getHiduke()%>';
-			td.appendChild(input);
-			tr.appendChild(td);
-	
-			td = document.createElement('td');
-			td.className = 'innerBoxCol';
-			select = document.createElement('select');
-			select.style.width = '100%'
-			select.style.boxSizing = 'border-box';
-			'<% for (Integer i : himokuMap.keySet()) { %>'
-				option = document.createElement('option');
-				option.value = '<%=himokuMap.get(i).getId()%>';
-				option.text = '<%=himokuMap.get(i).getHimokumei()%>';
-				select.appendChild(option);
-			'<% } %>'
-			td.appendChild(select);
-			tr.appendChild(td);
-			select.value = '<%=Integer.valueOf(kakeibo.getHimokuId()).toString()%>';	
-			
-			td = document.createElement('td');
-			td.className = 'textCol';
-			td.setAttribute('contenteditable','true');
-			td.innerHTML = '<%=kakeibo.getMeisai()%>';
-			tr.appendChild(td);
-	
-			td = document.createElement('td');
-			td.className = 'numberCol';
-			td.setAttribute('contenteditable','true');
-			td.innerHTML = '<%=String.format("%,d", kakeibo.getNyukingaku())%>';
-			tr.appendChild(td);
-	
-			td = document.createElement('td');
-			td.className = 'numberCol';
-			td.setAttribute('contenteditable','true');
-			td.innerHTML = '<%=String.format("%,d", kakeibo.getShukingaku())%>';
-			tr.appendChild(td);
-	
-			td = document.createElement('td');
-			td.className = 'innerBoxCol';
-			button = document.createElement('button');
-			button.className ='update';
-			button.onclick = clicked;
-			button.style.width = '100%'
-			button.style.boxSizing = 'border-box';
-			button.style.textAlign = 'center';
-			button.innerHTML = '更新';
-			td.appendChild(button);
-			tr.appendChild(td);
-	
-			td = document.createElement('td');
-			td.className = 'innerBoxCol';
-			button = document.createElement('button');
-			button.className ='delete';
-			button.onclick = clicked;
-			button.style.width = '100%'
-			button.style.boxSizing = 'border-box';
-			button.style.textAlign = 'center';
-			button.innerHTML = '削除';
-			td.appendChild(button);
-			tr.appendChild(td);
-			
-			tbody.appendChild(tr);
+	<script>
+		//コンソールの初期データの表示
+		//費目データのドロップダウンリスト
+		let select = document.getElementById('himokuSelectId');
+		let option;
+		'<% for (Integer i : himokuMap.keySet()) { %>'
+		
+			option = document.createElement('option');
+			option.value = '<%=himokuMap.get(i).getId()%>';
+			option.text = '<%=himokuMap.get(i).getHimokumei()%>';
+			select.appendChild(option);
 		'<% } %>'
 		
-		document.getElementById('tableArea').scrollTop = '<%=consoleData.getTableScrollTop()%>'
-
+		'<% if (consoleData != null) { %>'
+			//再表示時のデータ表示
+			document.getElementById('hidukeFirst').value = '<%=consoleData.getHidukeFirst()%>';
+			document.getElementById('hidukeLast').value = '<%=consoleData.getHidukeLast()%>';
+			document.getElementById('himokuSelectId').value = '<%=consoleData.getHimokuSelectId()%>'
+			document.getElementById('meisaiSelect').value = '<%=consoleData.getMeisaiSelect()%>'
+		'<% } else { %>'
+			//初期表示時のデータ表示
+			document.getElementById('hidukeFirst').value = '<%=today%>';
+			document.getElementById('hidukeLast').value = '<%=today%>';
+			document.getElementById('himokuSelectId').value = '0';
+			document.getElementById('meisaiSelect').value = '';
+		'<% } %>'
 		
-		function clicked(e) {
-
-			let url = 'http://localhost:8080/kakeibo/UpdateServlet';
-
-			//家計簿データの表示条件データを取得
-			let fd = new FormData();
-			
- 			fd.append('hidukeFirst', document.getElementById('hidukeFirst').value);
- 		    fd.append('hidukeLast',document.getElementById('hidukeLast').value);
- 		    fd.append('himokuSelectId',document.getElementById('himokuSelectId').value);
- 		    fd.append('meisaiSelect',document.getElementById('meisaiSelect').value);
- 			fd.append('tableScrollTop',document.getElementById('tableArea').scrollTop);
- 			
-			let targetClassName = e.target.className;
-			let trChildren = e.target.parentElement.parentElement.children;
-
-			fd.append('option',targetClassName);
-			fd.append('id', trChildren[0].textContent);
-						
-			if(targetClassName == 'update') {
-				//修正する家計簿データをコントロールにポスト
-				fd.append('hiduke',trChildren[1].firstElementChild.value);
-				fd.append('himokuId',trChildren[2].firstElementChild.value);
-				fd.append('meisai',trChildren[3].textContent);
-				fd.append('nyukingaku',trChildren[4].textContent);
-				fd.append('shukingaku',trChildren[5].textContent);
+		'<% if (kakeiboList != null) { %>'
+			//家計簿データテーブルの表示
+			let header = ['ID', '日付', '費目', '内容', '収入', '支出','',''];
+			let colWidth = ['50px','150px','200px','500px','200px','200px','40px','40px'];
+		
+			let thead = document.getElementById('thead');
+			let tr = document.createElement('tr');
+			tr.className = 'headRow';
+			for (let i in header) {
+				let th = document.createElement('th');
+				if (i == 0) {
+					th.className = 'fixdRowCol';
+				}else{
+					th.className = 'fixdRow';
+				}
+				th.setAttribute('width',colWidth[i]);
+				th.innerHTML = header[i];
+				tr.appendChild(th);
+			}
+			thead.appendChild(tr);
+	
+			let tbody = document.getElementById('tbody');
+			let td;
+			let input;
+			'<% for (Kakeibo kakeibo : kakeiboList) { %>'
+		
+				tr = document.createElement('tr');
+				tr.className = 'bodyRow';
+		
+				th = document.createElement('th');
+				th.className = 'fixdCol numberCol';
+				th.innerHTML = '<%=String.format("%d", kakeibo.getId())%>';
+				tr.appendChild(th);
+		
+				td = document.createElement('td');
+				td.className = 'innerBoxCol';
+				input = document.createElement('input');
+				input.type = 'date';
+				input.style.width = '100%'
+				input.style.boxSizing = 'border-box';
+				input.style.textAlign = 'center';
+				input.setAttribute('required', '');
+				td.style.textAlign = 'center';
+				input.value = '<%=kakeibo.getHiduke()%>';
+				td.appendChild(input);
+				tr.appendChild(td);
+		
+				td = document.createElement('td');
+				td.className = 'innerBoxCol';
+				select = document.createElement('select');
+				select.style.width = '100%'
+				select.style.boxSizing = 'border-box';
+				'<% for (Integer i : himokuMap.keySet()) { %>'
+					option = document.createElement('option');
+					option.value = '<%=himokuMap.get(i).getId()%>';
+					option.text = '<%=himokuMap.get(i).getHimokumei()%>';
+					select.appendChild(option);
+				'<% } %>'
+				td.appendChild(select);
+				tr.appendChild(td);
+				select.value = '<%=Integer.valueOf(kakeibo.getHimokuId()).toString()%>';	
 				
-			    fetch(url,{
-				    method: 'POST',
-				    body: fd
-				}).then((response) => {
-			        if(!response.ok) {
-			            console.log('error!');
-			        }
-			        console.log('update_ok!');
-			        location.reload();
-			        return response;
-			    }).then((data)  => {
-			        console.log(data);
-			    }).catch((error) => {
-			        console.log(error);
-			    });
-			    
-			}else if(targetClassName == 'delete') {
-				//削除する家計簿データのIDをコントロールにポスト
-	 			let xhr = new XMLHttpRequest();
-	 			xhr.open('POST',url,false);
-	 			xhr.send(fd);
+				td = document.createElement('td');
+				td.className = 'textCol';
+				td.setAttribute('contenteditable','true');
+				td.innerHTML = '<%=kakeibo.getMeisai()%>';
+				tr.appendChild(td);
+		
+				td = document.createElement('td');
+				td.className = 'numberCol';
+				td.setAttribute('contenteditable','true');
+				td.innerHTML = '<%=String.format("%,d", kakeibo.getNyukingaku())%>';
+				tr.appendChild(td);
+		
+				td = document.createElement('td');
+				td.className = 'numberCol';
+				td.setAttribute('contenteditable','true');
+				td.innerHTML = '<%=String.format("%,d", kakeibo.getShukingaku())%>';
+				tr.appendChild(td);
+		
+				td = document.createElement('td');
+				td.className = 'innerBoxCol';
+				button = document.createElement('button');
+				button.className ='update';
+				button.onclick = clicked;
+				button.style.width = '100%'
+				button.style.boxSizing = 'border-box';
+				button.style.textAlign = 'center';
+				button.innerHTML = '更新';
+				td.appendChild(button);
+				tr.appendChild(td);
+		
+				td = document.createElement('td');
+				td.className = 'innerBoxCol';
+				button = document.createElement('button');
+				button.className ='delete';
+				button.onclick = clicked;
+				button.style.width = '100%'
+				button.style.boxSizing = 'border-box';
+				button.style.textAlign = 'center';
+				button.innerHTML = '削除';
+				td.appendChild(button);
+				tr.appendChild(td);
+				
+				tbody.appendChild(tr);
+			'<% } %>'
+			
+			document.getElementById('tableArea').scrollTop = '<%=consoleData.getTableScrollTop()%>'
+	
+			function clicked(e) {
+	
+				let url = 'http://localhost:8080/kakeibo/UpdateServlet';
+	
+				//家計簿データの表示条件データを取得
+				let fd = new FormData();
+				
+	 			fd.append('hidukeFirst', document.getElementById('hidukeFirst').value);
+	 		    fd.append('hidukeLast',document.getElementById('hidukeLast').value);
+	 		    fd.append('himokuSelectId',document.getElementById('himokuSelectId').value);
+	 		    fd.append('meisaiSelect',document.getElementById('meisaiSelect').value);
+	 			fd.append('tableScrollTop',document.getElementById('tableArea').scrollTop);
 	 			
-	 			console.log('delete_post_ok!');
-	 			location.reload();
- 			}
-
-		}
-
-	'<% } %>'
-</script>
-
+				let targetClassName = e.target.className;
+				let trChildren = e.target.parentElement.parentElement.children;
+	
+				fd.append('option',targetClassName);
+				fd.append('id', trChildren[0].textContent);
+							
+				if(targetClassName == 'update') {
+					//修正する家計簿データをコントローラにポスト
+					fd.append('hiduke',trChildren[1].firstElementChild.value);
+					fd.append('himokuId',trChildren[2].firstElementChild.value);
+					fd.append('meisai',trChildren[3].textContent);
+					fd.append('nyukingaku',trChildren[4].textContent);
+					fd.append('shukingaku',trChildren[5].textContent);
+					
+				    fetch(url,{
+					    method: 'POST',
+					    body: fd
+					}).then((response) => {
+				        if(!response.ok) {
+				            console.log('error!');
+				        }
+				        console.log('update_ok!');
+// 				        location.reload();
+				        return response;
+				    }).then((data)  => {
+				        console.log(data);
+				    }).catch((error) => {
+				        console.log(error);
+				    });
+				    
+				}else if(targetClassName == 'delete') {
+					//削除する家計簿データのIDをコントローラにポスト
+		 			let xhr = new XMLHttpRequest();
+		 			xhr.open('POST',url,false);
+		 			xhr.send(fd);
+		 			
+		 			console.log('delete_post_ok!');
+		 			location.reload();
+	 			}
+	
+			}
+	
+		'<% } %>'
+	</script>
+</body>
 </html>

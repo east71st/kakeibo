@@ -2,18 +2,21 @@
 <%@ page import="model.Kakeibo,model.ConsoleData,model.Himoku,java.lang.String,java.util.Date,java.util.List,java.util.Map,java.time.LocalDate,java.time.format.DateTimeFormatter"%>
     
 <%
-    List<Kakeibo> kakeiboList = (List<Kakeibo>) request.getAttribute("kakeiboList");
-    Map<Integer,Himoku> himokuMap = (Map<Integer,Himoku>) session.getAttribute("himokuMap");
-    ConsoleData consoleData = (ConsoleData) session.getAttribute("DisplayConsoleData");
-    String firstDay = LocalDate.now().withDayOfMonth(1).format(DateTimeFormatter.ISO_LOCAL_DATE);
-    String lastDay = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).format(DateTimeFormatter.ISO_LOCAL_DATE);
-    %>
+List<Kakeibo> kakeiboList = (List<Kakeibo>) request.getAttribute("kakeiboList");
+Map<Integer,Himoku> himokuMap = (Map<Integer,Himoku>) session.getAttribute("himokuMap");
+ConsoleData consoleData = (ConsoleData) session.getAttribute("DisplayConsoleData");
+String firstDay = LocalDate.now().withDayOfMonth(1).format(DateTimeFormatter.ISO_LOCAL_DATE);
+String lastDay = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).format(DateTimeFormatter.ISO_LOCAL_DATE);
+%>
 
 <!-- 家計簿データの表示用画面の表示 -->
 <!DOCTYPE html>
 <html lang="ja">
 
-<jsp:include page="WEB-INF/jsp/head.jsp" />
+<head>
+	<jsp:include page="WEB-INF/jsp/head.jsp" />
+	<script src="js/jquery-3.7.1.min.js"></script>
+</head>
 
 <body>
 
@@ -126,34 +129,33 @@
 			</div>
 		<% } %>
 	</footer>
-</body>
 
-<script>
-	//コンソールの初期データの表示
-	//費目データのドロップダウンリスト
-	let select = document.getElementById('himokuSelectId');
-	let option;
-	'<% for (Integer i : himokuMap.keySet()) { %>'
+	<script>
+		//コンソールの初期データの表示
+		//費目データのドロップダウンリスト
+		let select = document.getElementById('himokuSelectId');
+		let option;
+		'<% for (Integer i : himokuMap.keySet()) { %>'
+			
+			option = document.createElement('option');
+			option.value = '<%= himokuMap.get(i).getId() %>';
+			option.text = '<%= himokuMap.get(i).getHimokumei() %>';
+			select.appendChild(option);
+		'<% } %>'
 		
-		option = document.createElement('option');
-		option.value = '<%= himokuMap.get(i).getId() %>';
-		option.text = '<%= himokuMap.get(i).getHimokumei() %>';
-		select.appendChild(option);
-	'<% } %>'
-	
-	'<% if (consoleData != null) { %>'
-		//再表示時のデータ表示
-		document.getElementById('hidukeFirst').value = '<%= consoleData.getHidukeFirst() %>';
-		document.getElementById('hidukeLast').value = '<%= consoleData.getHidukeLast() %>';
-		document.getElementById('himokuSelectId').value = '<%= consoleData.getHimokuSelectId() %>'
-		document.getElementById('meisaiSelect').value = '<%= consoleData.getMeisaiSelect() %>'
-	'<% } else { %>'
-		//初期表示時のデータ表示
-		document.getElementById('hidukeFirst').value = '<%= firstDay %>';
-		document.getElementById('hidukeLast').value = '<%= lastDay %>';
-		document.getElementById('himokuSelectId').value = '0';
-		document.getElementById('meisaiSelect').value = '';
-	'<% } %>'
-</script>
-
+		'<% if (consoleData != null) { %>'
+			//再表示時のデータ表示
+			document.getElementById('hidukeFirst').value = '<%= consoleData.getHidukeFirst() %>';
+			document.getElementById('hidukeLast').value = '<%= consoleData.getHidukeLast() %>';
+			document.getElementById('himokuSelectId').value = '<%= consoleData.getHimokuSelectId() %>'
+			document.getElementById('meisaiSelect').value = '<%= consoleData.getMeisaiSelect() %>'
+		'<% } else { %>'
+			//初期表示時のデータ表示
+			document.getElementById('hidukeFirst').value = '<%= firstDay %>';
+			document.getElementById('hidukeLast').value = '<%= lastDay %>';
+			document.getElementById('himokuSelectId').value = '0';
+			document.getElementById('meisaiSelect').value = '';
+		'<% } %>'
+	</script>
+</body>
 </html>

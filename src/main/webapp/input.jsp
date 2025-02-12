@@ -12,9 +12,12 @@ String today = dateFormat.format(new Date());
 <!DOCTYPE html>
 <html lang="ja">
 
-<jsp:include page="WEB-INF/jsp/head.jsp" />
+<head>
+	<jsp:include page="WEB-INF/jsp/head.jsp" />
+	<script src="js/jquery-3.7.1.min.js"></script>
+</head>
 
-<body>
+<body onload="init()">
 
 	<header>
 		<!-- メニューバーの表示 -->
@@ -50,7 +53,7 @@ String today = dateFormat.format(new Date());
 					</tr>
 					<tr>
 						<td>金額</td>
-						<td><input type="number" name="kingaku" id="kingaku" min=0></td>
+						<td><input type="number" name="kingaku" id="kingaku" min=0 autocomplete="off"></td>
 					</tr>
 					<tr>
 						<td></td>
@@ -116,36 +119,66 @@ String today = dateFormat.format(new Date());
 			<div id="errorDisplay">${inputData.getErrorMsg()}</div>
 		<% } %>
 	</footer>
-</body>
 
-<script>
-	//コンソールの初期データの表示
-	//費目データのドロップダウンリスト
-	let select = document.getElementById('himokuId');
-	let option;
-	'<% for (Integer i : himokuMap.keySet()) { %>'
+	<script>
+		//コンソールの初期データの表示
+		//費目データのドロップダウンリスト
+		let select = document.getElementById('himokuId');
+		let option;
+		'<% for (Integer i : himokuMap.keySet()) { %>'
+			
+			option = document.createElement('option');
+			option.value = '<%=himokuMap.get(i).getId()%>';
+			option.text = '<%=himokuMap.get(i).getHimokumei()%>';
+			select.appendChild(option);
+		'<% } %>'
 		
-		option = document.createElement('option');
-		option.value = '<%=himokuMap.get(i).getId()%>';
-		option.text = '<%=himokuMap.get(i).getHimokumei()%>';
-		select.appendChild(option);
-	'<% } %>'
-	
-	'<% if (inputData != null && inputData.getErrorMsg().length() != 0) { %>'
-		//入力エラーが発生した場合の再表示時のデータ表示
-		document.getElementById("hiduke").value = '<%=inputData.getInputHiduke()%>';
-		document.getElementById("himokuId").value = '<%=inputData.getInputHimokuId()%>';
-		document.getElementById("meisai").value = '<%=inputData.getInputMeisai()%>';
-		document.getElementById("kingaku").value = '<%=inputData.getInputKingaku()%>';
-	'<% } else if (inputData != null) { %>'
-		//入力エラーが発生しなかった場合の再表示時のデータ表示
-		document.getElementById("hiduke").value = '<%=inputData.getInputHiduke()%>';
-		document.getElementById("himokuId").value = '<%=inputData.getInputHimokuId()%>';
-	'<% } else { %>'
-		//初期表示時のデータ表示
-		document.getElementById("hiduke").value = '<%=today%>';
-	'<% } %>'
+		'<% if (inputData != null && inputData.getErrorMsg().length() != 0) { %>'
+			//入力エラーが発生した場合の再表示時のデータ表示
+			document.getElementById("hiduke").value = '<%=inputData.getInputHiduke()%>';
+			document.getElementById("himokuId").value = '<%=inputData.getInputHimokuId()%>';
+			document.getElementById("meisai").value = '<%=inputData.getInputMeisai()%>';
+			document.getElementById("kingaku").value = '<%=inputData.getInputKingaku()%>';
+		'<% } else if (inputData != null) { %>'
+			//入力エラーが発生しなかった場合の再表示時のデータ表示
+			document.getElementById("hiduke").value = '<%=inputData.getInputHiduke()%>';
+			document.getElementById("himokuId").value = '<%=inputData.getInputHimokuId()%>';
+		'<% } else { %>'
+			//初期表示時のデータ表示
+			document.getElementById("hiduke").value = '<%=today%>';
+		'<% } %>'
+		
+		//フォーカスの初期状態
+		function init() {
+			let hiduke = document.getElementById('hiduke');
+			hiduke.focus();
+		}
 
-</script>
+		//エンターキーによるフォーカスの移動処理
+		$(function(){
+			$('form').on('keydown', 'input, button, select, textarea', function(e) {
+			    if (e.keyCode == 13) {
+			        if ($(this).attr("type") == 'submit') return;
 
+			        let form = $(this).closest('form');
+			        let focusable = form.find('input, button[type="submit"], select, textarea')
+			            .not('[readonly]').filter(':visible');
+
+			        if (e.shiftKey) {
+			            focusable.eq(focusable.index(this) - 1).focus();
+			        } else {
+			            let next = focusable.eq(focusable.index(this) + 1);
+			            if (next.length) {
+			                next.focus();
+			            } else {
+			                focusable.eq(0).focus();
+			            }
+			        }
+
+			        e.preventDefault();
+			    }
+			});
+		});
+	</script>
+</body>
 </html>

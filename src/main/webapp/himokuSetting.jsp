@@ -9,7 +9,9 @@ Map<Integer, Himoku> himokuMap = (Map<Integer, Himoku>) session.getAttribute("hi
 <!DOCTYPE html>
 <html lang="ja">
 
-<jsp:include page="WEB-INF/jsp/head.jsp" />
+<head>
+	<jsp:include page="WEB-INF/jsp/head.jsp" />
+</head>
 
 <body>
 
