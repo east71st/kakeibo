@@ -10,14 +10,14 @@ Map<Integer, Himoku> himokuMap = (Map<Integer, Himoku>) session.getAttribute("hi
 <html lang="ja">
 
 <head>
-	<jsp:include page="WEB-INF/jsp/head.jsp" />
+	<jsp:include page="head.jsp" />
 </head>
 
 <body>
 
 	<header>
 		<!-- メニューバーの表示 -->
-		<jsp:include page="WEB-INF/jsp/menu.jsp" />
+		<jsp:include page="menu.jsp" />
 	</header>
 	
 	<div id="main">

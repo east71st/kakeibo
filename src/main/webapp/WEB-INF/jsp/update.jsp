@@ -14,15 +14,14 @@ String today = dateFormat.format(new Date());
 <html lang="ja">
 
 <head>
-	<jsp:include page="WEB-INF/jsp/head.jsp" />
-	<script src="js/jquery-3.7.1.min.js"></script>
+	<jsp:include page="head.jsp" />
 </head>
 
-<body onload="init()">
+<body>
 
 	<header>
 		<!-- メニューバーの表示 -->
-		<jsp:include page="WEB-INF/jsp/menu.jsp" />
+		<jsp:include page="menu.jsp" />
 	</header>
 
 	<div id="main">
@@ -65,7 +64,7 @@ String today = dateFormat.format(new Date());
 						<td><input type="submit" value="表示"></td>
 					</tr>
 				</table>
-				<input type="hidden" name="option" value="display">
+				<input type="hidden" name="mode" value="display">
 			</form>
 
 		</section>
@@ -240,7 +239,7 @@ String today = dateFormat.format(new Date());
 				let targetClassName = e.target.className;
 				let trChildren = e.target.parentElement.parentElement.children;
 	
-				fd.append('option',targetClassName);
+				fd.append('mode',targetClassName);
 				fd.append('id', trChildren[0].textContent);
 							
 				if(targetClassName == 'update') {
@@ -253,14 +252,13 @@ String today = dateFormat.format(new Date());
 					
 				    fetch(url,{
 					    method: 'POST',
-					    body: fd
+					    body: fd,
 					}).then((response) => {
 				        if(!response.ok) {
 				            console.log('error!');
 				        }
 				        console.log('update_ok!');
-// 				        location.reload();
-				        return response;
+				        return response.text();
 				    }).then((data)  => {
 				        console.log(data);
 				    }).catch((error) => {

@@ -37,7 +37,7 @@ public class HimokuServlet extends HttpServlet {
 		HimokuMapSetup himokuMapSetup = new HimokuMapSetup();
 		himokuMapSetup.setHimokuMap(request);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("himokuSetting.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/himokuSetting.jsp");
 		dispatcher.forward(request, response);
 
 	}
@@ -74,7 +74,7 @@ public class HimokuServlet extends HttpServlet {
 		HimokuMapSetup himokuMapSetup = new HimokuMapSetup();
 		himokuMapSetup.setHimokuMap(request);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("himokuSetting.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/himokuSetting.jsp");
 		dispatcher.forward(request, response);
 	}
 

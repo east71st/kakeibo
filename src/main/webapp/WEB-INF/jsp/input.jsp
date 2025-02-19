@@ -13,15 +13,15 @@ String today = dateFormat.format(new Date());
 <html lang="ja">
 
 <head>
-	<jsp:include page="WEB-INF/jsp/head.jsp" />
-	<script src="js/jquery-3.7.1.min.js"></script>
+	<jsp:include page="head.jsp" />
+	<script src="js/jquery-3.7.1.js"></script>
 </head>
 
 <body onload="init()">
 
 	<header>
 		<!-- メニューバーの表示 -->
-		<jsp:include page="WEB-INF/jsp/menu.jsp" />
+		<jsp:include page="menu.jsp" />
 	</header>
 
 	<div id="main">

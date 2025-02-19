@@ -14,15 +14,14 @@ String lastDay = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())
 <html lang="ja">
 
 <head>
-	<jsp:include page="WEB-INF/jsp/head.jsp" />
-	<script src="js/jquery-3.7.1.min.js"></script>
+	<jsp:include page="head.jsp" />
 </head>
 
 <body>
 
 	<header>
 		<!-- メニューバーの表示 -->
-		<jsp:include page="WEB-INF/jsp/menu.jsp"/>
+		<jsp:include page="menu.jsp"/>
 	</header>
 	
 	<div id="main">

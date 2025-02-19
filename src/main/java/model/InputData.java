@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 //家計簿データの入力用画面で入力された家計簿の新規データの格納用モデル
-public class InputData {
+public class InputData implements Serializable {
 
 	private String inputHiduke;
 	private String inputHimokuId;

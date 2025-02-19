@@ -1,7 +1,9 @@
 package model;
 
+import java.io.Serializable;
+
 //費目データの設定用画面で入力された費目データの格納用モデル
-public class HimokuSettingData {
+public class HimokuSettingData implements Serializable {
 
 	private String inputId;
 	private String inputHimokumei;

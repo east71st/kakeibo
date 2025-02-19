@@ -37,7 +37,7 @@ public class UpdateServlet extends HttpServlet {
 		HimokuMapSetup himokuMapSetup = new HimokuMapSetup();
 		himokuMapSetup.setHimokuMap(request);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("update.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/update.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -61,7 +61,7 @@ public class UpdateServlet extends HttpServlet {
 		
 		KakeiboDAO kakeiboDAO = new KakeiboDAO();
 
-		if (request.getParameter("option").equals("update")) {
+		if (request.getParameter("mode").equals("update")) {
 			
 			//入力された家計簿の修正データにエラーがなければデータベースを更新
 			String id = request.getParameter("id");
@@ -78,7 +78,7 @@ public class UpdateServlet extends HttpServlet {
 				kakeiboDAO.update(updateData.getKakeibo());
 			}
 
-		} else if (request.getParameter("option").equals("delete")) {
+		} else if (request.getParameter("mode").equals("delete")) {
 
 			//指定されたIDの家計簿データをデータベースから削除
 			ValidationLogic validationLogic = new ValidationLogic();
@@ -92,8 +92,9 @@ public class UpdateServlet extends HttpServlet {
 				meisaiSelect);
 		
 		request.setAttribute("kakeiboList", kakeiboList);
-
-		RequestDispatcher dispatcher = request.getRequestDispatcher("update.jsp");
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/update.jsp");
 		dispatcher.forward(request, response);
+
 	}
 }

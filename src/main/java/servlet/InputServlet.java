@@ -34,7 +34,7 @@ public class InputServlet extends HttpServlet {
 		HimokuMapSetup himokuMapSetup = new HimokuMapSetup();
 		himokuMapSetup.setHimokuMap(request);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("input.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/input.jsp");
 		dispatcher.forward(request, response);
 
 	}
@@ -71,7 +71,7 @@ public class InputServlet extends HttpServlet {
 			session.setAttribute("inputDataList", inputDataList);
 		}
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("input.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/input.jsp");
 		dispatcher.forward(request, response);
 	}
 

@@ -34,7 +34,7 @@ public class DisplayServlet extends HttpServlet {
 		HimokuMapSetup himokuMapSetup = new HimokuMapSetup();
 		himokuMapSetup.setHimokuMap(request);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("display.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/display.jsp");
 		dispatcher.forward(request, response);
 
 	}
@@ -62,7 +62,7 @@ public class DisplayServlet extends HttpServlet {
 
 		request.setAttribute("kakeiboList", kakeiboList);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("display.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/display.jsp");
 		dispatcher.forward(request, response);
 
 	}

@@ -1,7 +1,9 @@
 package model;
 
+import java.io.Serializable;
+
 //家計簿データの表示用画面と修正用画面でコンソールに入力された表示条件データの格納用モデル
-public class ConsoleData {
+public class ConsoleData implements Serializable {
 
 	private String hidukeFirst;
 	private String hidukeLast;
@@ -15,7 +17,7 @@ public class ConsoleData {
 
 		StringBuilder errorMsg = new StringBuilder("");
 
-//		入力された表示条件データのチェック
+		//入力された表示条件データのチェック
 		ValidationLogic validationLogic = new ValidationLogic();
 		validationLogic.parseHiduke(hidukeFirst, errorMsg);
 		validationLogic.parseHiduke(hidukeLast, errorMsg);

@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 //家計簿データの修正用画面で入力された家計簿の修正データの格納用モデル
-public class UpdateData {
+public class UpdateData implements Serializable {
 
 	private String updateId;
 	private String updateHiduke;
